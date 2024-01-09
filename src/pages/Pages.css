@@ -1,0 +1,26 @@
+
+@media only screen and (max-width: 600px) {
+    /* Adjust the maximum width to match your design needs */
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: #0E202B; /* Adjust the color as needed */
+      color: #ffffff; /* Set text color for better contrast */
+      font-family: Arial, sans-serif; /* Set a default font family */
+    }
+  
+    /* Responsive font size */
+    h1 {
+      font-size: 24px;
+    }
+  
+    h3 {
+      font-size: 18px;
+    }
+  
+    h4 {
+      font-size: 16px;
+    }
+
+}
