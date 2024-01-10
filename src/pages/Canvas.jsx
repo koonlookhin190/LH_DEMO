@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+// import { ref, storage, uploadString, getDownloadURL } from 'your-firebase-library'; 
 import './Canvas.css';
 
 const DrawingComponent = () => {
@@ -27,12 +28,15 @@ const DrawingComponent = () => {
 
     const startDrawing = (e) => {
       setIsDrawing(true);
+      logCoordinates(e);
       context.beginPath();
       context.moveTo(getX(e), getY(e));
     };
 
     const draw = (e) => {
       if (!isDrawing) return;
+
+      logCoordinates(e);
 
       context.globalCompositeOperation = 'source-over';
       context.lineWidth = penSize;
@@ -57,6 +61,12 @@ const DrawingComponent = () => {
       return event.clientY
         ? event.clientY - canvas.getBoundingClientRect().top
         : event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    };
+
+    const logCoordinates = (event) => {
+      const x = getX(event);
+      const y = getY(event);
+      console.log(`Current Coordinates: (${x}, ${y}), Timer: ${minutes}:${seconds}`);
     };
 
     canvas.addEventListener('mousedown', startDrawing);
