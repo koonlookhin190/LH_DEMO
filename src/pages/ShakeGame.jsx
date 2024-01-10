@@ -1,6 +1,7 @@
 // import './pages/Pages.css'
 import { useState, useEffect } from "react";
 import '../pages/ShakeGame.css'
+import '../pages/Pages.css'
 import Swal from 'sweetalert2'
 function ShakeGame() {
     // const [coins, setCoins] = useState(Array(10).fill(true));

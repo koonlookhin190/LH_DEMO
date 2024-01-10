@@ -4,6 +4,7 @@ import { useState } from 'react'
 import './App.css'
 import ShakeGame from './pages/ShakeGame'
 import RepeatGame from './pages/RepeatGame'
+import DotGame from './pages/DotGame'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   // const [count, setCount] = useState(0)
@@ -34,6 +35,7 @@ function App() {
       <Routes>
           <Route index element={<ShakeGame />} />
           <Route path="/repeat" element={<RepeatGame />} />
+          <Route path="/dotgame" element={<DotGame />} />
       </Routes>
     </BrowserRouter>
     </>
