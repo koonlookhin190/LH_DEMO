@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import './Pages.css'
-import texts from "./Text.js";
-import "./RepeatGame.css";
+import texts from "./LongestSoundText.js";
 
 const RepeatGame = () => {
   const [permission, setPermission] = useState(false);
