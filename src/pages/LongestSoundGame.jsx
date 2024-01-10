@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import './Pages.css'
 import texts from "./LongestSoundText.js";
+import "./RepeatGame.css";
 
-const RepeatGame = () => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+
+const LongestSoundGame = () => {
   const [permission, setPermission] = useState(false);
   const mediaRecorder = useRef(null);
   const [recordingStatus, setRecordingStatus] = useState("inactive");
@@ -76,7 +80,7 @@ const RepeatGame = () => {
 
   return (
     <div>
-      <h3>พูดตามประโยคด้านล่างต่อไปนี้</h3>
+      <h3>พูดตามประโยคด้านล่างให้ยาวที่สุด</h3>
       <h4>{'"' + randomText + '"'}</h4>
       <main>
         <div className="audio-controls">
@@ -87,7 +91,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              เปิดไมโครโฟน
+              <FontAwesomeIcon icon={faMicrophone} size="2x" />
             </button>
           ) : null}
           {permission && recordingStatus === "inactive" ? (
@@ -97,7 +101,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              เริ่มบันทึกเสียง
+              <FontAwesomeIcon icon={faPlay} size="2x" />
             </button>
           ) : null}
           {permission && recordingStatus === "recording" ? (
@@ -107,7 +111,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              หยุดบันทึกเสียง
+              <FontAwesomeIcon icon={faStop} size="2x" />
             </button>
           ) : null}
         </div>
@@ -117,4 +121,4 @@ const RepeatGame = () => {
   );
 };
 
-export default RepeatGame;
+export default LongestSoundGame;

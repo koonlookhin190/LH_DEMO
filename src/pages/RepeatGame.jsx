@@ -3,6 +3,9 @@ import './Pages.css'
 import texts from "./Text.js";
 import "./RepeatGame.css";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+
 const RepeatGame = () => {
   const [permission, setPermission] = useState(false);
   const mediaRecorder = useRef(null);
@@ -88,7 +91,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              เปิดไมโครโฟน
+              <FontAwesomeIcon icon={faMicrophone} size="2x" />
             </button>
           ) : null}
           {permission && recordingStatus === "inactive" ? (
@@ -98,7 +101,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              เริ่มบันทึกเสียง
+              <FontAwesomeIcon icon={faPlay} size="2x" />
             </button>
           ) : null}
           {permission && recordingStatus === "recording" ? (
@@ -108,7 +111,7 @@ const RepeatGame = () => {
               }}
               type="button"
             >
-              หยุดบันทึกเสียง
+              <FontAwesomeIcon icon={faStop} size="2x" />
             </button>
           ) : null}
         </div>

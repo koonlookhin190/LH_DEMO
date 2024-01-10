@@ -1,0 +1,25 @@
+.audio-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%; /* Assuming you want the buttons to be centered vertically on the viewport */
+  }
+  
+  .audio-controls button {
+    border: none;
+    border-radius: 50%;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+    margin: 5px;
+    cursor: pointer;
+    background-color: #3498db; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .audio-controls button:hover {
+    background-color: #2980b9; /* Set your desired hover background color */
+  }
+  
