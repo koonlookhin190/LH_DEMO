@@ -5,21 +5,53 @@
     height: 50%; /* Assuming you want the buttons to be centered vertically on the viewport */
   }
   
-  .audio-controls button {
-    border: none;
+  .custom-button {
     border-radius: 50%;
-    width: 100px; /* Adjust the size as needed */
-    height: 100px; /* Adjust the size as needed */
+    width: 80px; /* Adjust the size as needed */
+    height: 80px; /* Adjust the size as needed */
     margin: 5px;
     cursor: pointer;
-    background-color: #3498db; /* Set your desired background color */
+    background-color: green; /* Set your desired background color */
     color: #fff; /* Set your desired text color */
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease; /* Add a smooth transition effect */
   }
   
-  .audio-controls button:hover {
-    background-color: #2980b9; /* Set your desired hover background color */
+  .custom-button:hover {
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.3); /* Change box-shadow on hover */
   }
   
+  .recording {
+    background-color: red;
+    /* Add additional styles for the recording state */
+  }
+
+  .speech-image {
+    width: 70%;/* Set the width as needed */
+    max-width: 300px; /* Set the max width as needed */
+    margin-top: 4px; /* Adjust the margin as needed */
+  }
+  
+  .speech-bubble {
+    background-color: #3498db; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px; /* Adjust the margin as needed */
+    display: inline-block;
+    position: relative;
+  }
+  
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    border-width: 10px 15px;
+    border-style: solid;
+    border-color: #3498db transparent transparent transparent;
+    top: 85px;
+    left: 70%;
+    transform: translateX(-50%);
+  }

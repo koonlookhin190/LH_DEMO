@@ -3,6 +3,8 @@ import './Pages.css'
 import texts from "./Text.js";
 import "./RepeatGame.css";
 
+import img1 from "./assets/stand.png"
+import img2 from "./assets/speak.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,10 +17,17 @@ const RepeatGame = () => {
   const [audio, setAudio] = useState(null);
   const [randomText, setRandomText] = useState("");
   const mimeType = "audio/wav"; // You can change this to the desired audio format
+  const [imageSrc, setImageSrc] = useState(img1);
 
   useEffect(() => {
     setRandomText(getRandomText());
   }, []);
+
+  useEffect(() => {
+    if (permission && recordingStatus === "inactive") {
+      setRandomText(getRandomText());
+    }
+  }, [permission, recordingStatus]);
 
   const getRandomText = () => {
     const randomIndex = Math.floor(Math.random() * texts.length);
@@ -50,11 +59,11 @@ const RepeatGame = () => {
         );
       }
     }
-    setRandomText(getRandomText());
   };
 
   const startRecording = (streamData) => {
     setRecordingStatus("recording");
+    setImageSrc(img2);
     // analytics.logEvent('recording_started');
     const media = new MediaRecorder(streamData, { type: mimeType });
     mediaRecorder.current = media;
@@ -75,13 +84,20 @@ const RepeatGame = () => {
 
   const stopRecording = () => {
     setRecordingStatus("inactive");
+    setImageSrc(img1);
     mediaRecorder.current.stop();
   };
 
   return (
     <div>
       <h3>พูดตามประโยคด้านล่างต่อไปนี้</h3>
-      <h4>{'"' + randomText + '"'}</h4>
+      <div className="speech-bubble">
+        <h4>{'"' + randomText + '"'}</h4>
+      </div>
+      <img
+        src={imageSrc}
+        alt="Speech Image"
+        className="speech-image" />
       <main>
         <div className="audio-controls">
           {!permission ? (
@@ -90,6 +106,7 @@ const RepeatGame = () => {
                 getMicrophonePermission();
               }}
               type="button"
+              className="custom-button"
             >
               <FontAwesomeIcon icon={faMicrophone} size="2x" />
             </button>
@@ -100,6 +117,7 @@ const RepeatGame = () => {
                 startRecording(stream);
               }}
               type="button"
+              className="custom-button"
             >
               <FontAwesomeIcon icon={faPlay} size="2x" />
             </button>
@@ -110,6 +128,7 @@ const RepeatGame = () => {
                 stopRecording();
               }}
               type="button"
+              className="custom-button recording"
             >
               <FontAwesomeIcon icon={faStop} size="2x" />
             </button>

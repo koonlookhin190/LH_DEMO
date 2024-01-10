@@ -90,6 +90,7 @@ const LongestSoundGame = () => {
                 getMicrophonePermission();
               }}
               type="button"
+              className="custom-button"
             >
               <FontAwesomeIcon icon={faMicrophone} size="2x" />
             </button>
@@ -100,6 +101,7 @@ const LongestSoundGame = () => {
                 startRecording(stream);
               }}
               type="button"
+              className="custom-button"
             >
               <FontAwesomeIcon icon={faPlay} size="2x" />
             </button>
@@ -110,6 +112,7 @@ const LongestSoundGame = () => {
                 stopRecording();
               }}
               type="button"
+              className="custom-button recording"
             >
               <FontAwesomeIcon icon={faStop} size="2x" />
             </button>
