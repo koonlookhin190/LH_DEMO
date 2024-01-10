@@ -1,0 +1,65 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow: hidden;
+    margin: 0;
+    background-color: #2c345d;
+}
+
+.drawing-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+    padding: 0.5px;
+}
+
+.tool-navbar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.tool-navbar button,
+.tool-navbar input {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.tool-navbar button.active,
+.tool-navbar input.active {
+    background-color: #ccc;
+}
+
+canvas {
+    border: 1px solid #000;
+    background-color: rgb(255, 255, 255);
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 1.5em; 
+}
+
+@media only screen and (max-width:100%) {
+    .tool-navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tool-navbar button,
+    .tool-navbar input {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+}
