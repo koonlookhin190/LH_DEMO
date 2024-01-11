@@ -23,7 +23,13 @@
   .staying {
     animation: none;
   }
-  
+  /* #myThreeJsCanvas{
+    background-color: #ffffff;
+  } */
+  canvas{
+    height: 300px;
+    width: 300px;
+  }
   @keyframes fall {
     0% {
       transform: translateY(0);

@@ -1,8 +1,13 @@
 // import './pages/Pages.css'
-import { useState, useEffect } from "react";
+import { useState, useEffect,Suspense } from "react";
 import '../pages/ShakeGame.css'
 import '../pages/Pages.css'
 import Swal from 'sweetalert2'
+import * as THREE from 'three';
+import { Canvas } from '@react-three/fiber'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import Ball from "../models/Ball"
+import { OrbitControls , Stars } from "@react-three/drei";
 function ShakeGame() {
     // const [coins, setCoins] = useState(Array(10).fill(true));
 
@@ -44,6 +49,66 @@ function ShakeGame() {
     const [coins,setCoins] = useState(0);
   
     useEffect(() => {
+        // const scene = new THREE.Scene();
+        // const camera = new THREE.PerspectiveCamera(
+        //   75,
+        //   300 / 300,
+        //   1,
+        //   1000
+        // );
+        // camera.position.z = 96;
+        // // scene.background = new THREE.Color(0x000000); // Black color
+        // // scene.background.a = 0.5; // Set alpha (transparency) to 0.5
+        // const canvasContainer = document.getElementById('myCanvasContainer');
+        // const canvas = document.getElementById('myThreeJsCanvas');;
+        // const renderer = new THREE.WebGL1Renderer({
+        //   canvas,
+        //   antialias:true,
+        //   alpha: true,
+        // });
+        // renderer.setPixelRatio(window.devicePixelRatio);
+        // const containerWidth = canvasContainer.clientWidth;
+        // const containerHeight = canvasContainer.clientHeight;
+    
+        // renderer.setSize(containerWidth, containerHeight);
+        
+        // canvasContainer.appendChild(renderer.domElement);
+
+        // const ambientLight = new THREE.AmbientLight(0xffffff,0.5);
+        // scene.add(ambientLight)
+
+        // // const boxGemoetry = new THREE.BoxGeometry(60,60,60);
+        // // const boxMaterial = new THREE.MeshNormalMaterial();
+        // // const boxMesh = new THREE.Mesh(boxGemoetry,boxMaterial);
+        // // scene.add(boxMesh);
+        // const loader = new GLTFLoader();
+        // loader.load(
+        //   // Replace 'path/to/your/model.gltf' with the actual path to your GLTF model
+        //   'src/assets/models/gacha.gltf',
+        //   (gltf) => {
+        //     // Adjust the position, scale, or rotation as needed
+        //     const model = gltf.scene;
+        //     model.scale.set(1, 1, 1);
+        //     model.rotation.set(0, 0, 0);
+        //     model.position.set(0, 0, 0);
+    
+        //     // Add the model to the scene
+        //     scene.add(model);
+        //   },
+        //   undefined,
+        //   (error) => {
+        //     console.error('Error loading GLTF model', error);
+        //   }
+        // );
+
+        // const animate = () => {
+        //   boxMesh.rotation.x += 0.01;
+        //   boxMesh.rotation.y += 0.01;
+        //   renderer.render(scene,camera);
+        //   window.requestAnimationFrame(animate);
+        // };
+
+        // animate();
         let sensorEventListener;
         let countdownInterval;
         let isShaking
@@ -136,11 +201,28 @@ function ShakeGame() {
     return (
         <>
         <h3>Shake Game</h3>
-              <div className="gacha-ball">
+              {/* <div className="gacha-ball"> */}
         {/* {coins.map((coin, index) => (
           <div key={index} className={`coin ${coin ? 'falling' : 'staying'}`} />
         ))} */}
-      </div>
+      {/* </div> */}
+
+      {/* <div id="myCanvasContainer" style={{ position: 'relative', width: '300px', height: '300px', marginTop:'50px',marginBottom:'50px'}}>
+            <canvas id="myThreeJsCanvas" style={{ position: 'absolute', top: '0', left: '0' }} />
+        </div> */}
+
+      <Canvas>
+
+            {/* <OrbitControls enableZoom={false}/> */}
+        <Suspense fallback={null}>
+        <ambientLight intensity={2}/>
+        <pointLight position={[0, 0, 0]} intensity={1} color="white" />
+            <Ball scale={[0.6,0.6,0.6]}/>
+        </Suspense>
+      </Canvas>
+      {/* <Canvas>
+          <Gacha />
+      </Canvas> */}
       <button onClick={toggleSensor}>Start</button>
         </>
 
