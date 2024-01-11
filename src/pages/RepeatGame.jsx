@@ -5,11 +5,16 @@ import "./RepeatGame.css";
 
 import img1 from "./assets/stand.png"
 import img2 from "./assets/speak.png"
+import tutorial1 from "./assets/tutorial_1.jpg"
+import tutorial2 from "./assets/tutorial_2.jpg"
+import tutorial3 from "./assets/tutorial_3.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
 const RepeatGame = () => {
   const [permission, setPermission] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const mediaRecorder = useRef(null);
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [stream, setStream] = useState(null);
@@ -88,11 +93,41 @@ const RepeatGame = () => {
     mediaRecorder.current.stop();
   };
 
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % tutorialImages.length);
+  };
+
+  const closeTutorial = () => {
+    setShowTutorial(false);
+  };
+
+  const tutorialImages = [tutorial1, tutorial2, tutorial3];
+
   return (
     <div>
-      <h3>พูดตามประโยคด้านล่างต่อไปนี้</h3>
+      {showTutorial && (
+        <div className="fullscreen-overlay">
+          <div className="tutorial-slider">
+            {tutorialImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Tutorial ${index + 1}`}
+                style={{
+                  display: index === currentSlide ? "block" : "none",
+                }}
+              />
+            ))}
+            {currentSlide < tutorialImages.length - 1 && (
+              <button onClick={nextSlide}>ต่อไป</button>
+            )}
+            <button onClick={closeTutorial}>ปิดหน้าต่างนี้</button>
+          </div>
+        </div>
+      )}
+      <h1>เกมพูดตามฉัน</h1>
       <div className="speech-bubble">
-        <h4>{'"' + randomText + '"'}</h4>
+        <h2>{'"' + randomText + '"'}</h2>
       </div>
       <img
         src={imageSrc}
