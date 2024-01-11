@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from "react";
-import './Pages.css'
 import texts from "./LongestSoundText.js";
 import "./RepeatGame.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import img1 from "./assets/9.png";
+import img2 from "./assets/10.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMicrophone,
+  faPlay,
+  faStop,
+} from "@fortawesome/free-solid-svg-icons";
 
 const LongestSoundGame = () => {
   const [permission, setPermission] = useState(false);
@@ -15,10 +20,17 @@ const LongestSoundGame = () => {
   const [audio, setAudio] = useState(null);
   const [randomText, setRandomText] = useState("");
   const mimeType = "audio/wav"; // You can change this to the desired audio format
+  const [imageSrc, setImageSrc] = useState(img1);
 
   useEffect(() => {
     setRandomText(getRandomText());
   }, []);
+
+  useEffect(() => {
+    if (permission && recordingStatus === "inactive") {
+      setRandomText(getRandomText());
+    }
+  }, [permission, recordingStatus]);
 
   const getRandomText = () => {
     const randomIndex = Math.floor(Math.random() * texts.length);
@@ -55,6 +67,7 @@ const LongestSoundGame = () => {
 
   const startRecording = (streamData) => {
     setRecordingStatus("recording");
+    setImageSrc(img2);
     // analytics.logEvent('recording_started');
     const media = new MediaRecorder(streamData, { type: mimeType });
     mediaRecorder.current = media;
@@ -79,9 +92,12 @@ const LongestSoundGame = () => {
   };
 
   return (
-    <div>
-      <h3>พูดตามประโยคด้านล่างให้ยาวที่สุด</h3>
-      <h4>{'"' + randomText + '"'}</h4>
+    <div className="section2">
+      <h1>เกมลากเสียง</h1>
+      <div className="speech-bubble">
+        <h2>{'"' + randomText + '"'}</h2>
+      </div>
+      <img src={imageSrc} alt="Speech Image" className="speech-image" />
       <main>
         <div className="audio-controls">
           {!permission ? (

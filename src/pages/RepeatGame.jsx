@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import './Pages.css'
 import texts from "./Text.js";
 import "./RepeatGame.css";
 
@@ -104,7 +103,7 @@ const RepeatGame = () => {
   const tutorialImages = [tutorial1, tutorial2, tutorial3];
 
   return (
-    <div>
+    <div className="section1">
       {showTutorial && (
         <div className="fullscreen-overlay">
           <div className="tutorial-slider">
