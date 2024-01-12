@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { SpriteAnimator } from "react-sprite-animator";
 import texts from "./LongestSoundText.js";
 import "./RepeatGame.css";
 
 import img1 from "./assets/9.png";
-import img2 from "./assets/10.png";
+import img2 from "./assets/Megaman2.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMicrophone,
@@ -19,8 +20,9 @@ const LongestSoundGame = () => {
   const [audioChunks, setAudioChunks] = useState([]);
   const [audio, setAudio] = useState(null);
   const [randomText, setRandomText] = useState("");
-  const mimeType = "audio/wav"; // You can change this to the desired audio format
-  const [imageSrc, setImageSrc] = useState(img1);
+  const mimeType = "audio/wav";
+  const [imageStyle, setImageStyle] = useState({});
+  const [animateSprite, setAnimateSprite] = useState(false);
 
   useEffect(() => {
     setRandomText(getRandomText());
@@ -46,6 +48,7 @@ const LongestSoundGame = () => {
       setPermission(true);
       setStream(streamData);
       startRecording(streamData);
+      setAnimateSprite(true); // Activate sprite animation
     } catch (err) {
       console.error(err);
 
@@ -67,8 +70,6 @@ const LongestSoundGame = () => {
 
   const startRecording = (streamData) => {
     setRecordingStatus("recording");
-    setImageSrc(img2);
-    // analytics.logEvent('recording_started');
     const media = new MediaRecorder(streamData, { type: mimeType });
     mediaRecorder.current = media;
     let localAudioChunks = [];
@@ -76,6 +77,8 @@ const LongestSoundGame = () => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
       localAudioChunks.push(event.data);
+      const newPosition = localAudioChunks.length * 2;
+      setImageStyle({ transform: `translateX(${newPosition}px)` });
     };
     mediaRecorder.current.onstop = () => {
       const audioBlob = new Blob(localAudioChunks, { type: mimeType });
@@ -97,7 +100,19 @@ const LongestSoundGame = () => {
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
       </div>
-      <img src={imageSrc} alt="Speech Image" className="speech-image" />
+      {animateSprite ? (
+        <SpriteAnimator
+          width={270}
+          height={227}
+          sprite={img2}
+          shouldAnimate={true}
+          direction="horizontal"
+          frameCount={5}
+          fps={10}
+        />
+      ) : (
+        <img src={img1} alt="Speech Image" className="speech-image" style={imageStyle} />
+      )}
       <main>
         <div className="audio-controls">
           {!permission ? (
@@ -115,6 +130,7 @@ const LongestSoundGame = () => {
             <button
               onClick={() => {
                 startRecording(stream);
+                setAnimateSprite(true); // Activate sprite animation
               }}
               type="button"
               className="custom-button"
@@ -126,6 +142,7 @@ const LongestSoundGame = () => {
             <button
               onClick={() => {
                 stopRecording();
+                setAnimateSprite(false); // Deactivate sprite animation
               }}
               type="button"
               className="custom-button recording"
