@@ -1,0 +1,40 @@
+.gacha-ball {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  
+  .coin {
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    position: absolute;
+    border-radius: 50%;
+  }
+  
+  .falling {
+    animation: fall 0.5s linear infinite;
+  }
+  
+  .staying {
+    animation: none;
+  }
+  /* #myThreeJsCanvas{
+    background-color: #ffffff;
+  } */
+  canvas{
+    height: 300px;
+    width: 300px;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(380px); /* Adjust this value based on your design */
+    }
+  }

@@ -1,0 +1,17 @@
+
+.dot {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  .container {
+    position: relative;
+    width: 300px; /* Set the width of the container */
+    height: 300px; /* Set the height of the container */
+    border: 1px solid #ccc;
+    overflow: hidden; /* Ensure that the dot stays within the container */
+  }

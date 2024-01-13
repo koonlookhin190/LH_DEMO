@@ -3,7 +3,11 @@ import { useState } from 'react'
 // import viteLogo from '/vite.svg'
 import DrawingComponent from './pages/Canvas'
 import './App.css'
-
+import ShakeGame from './pages/ShakeGame'
+import Home from './pages/Home'
+import RepeatGame from './pages/RepeatGame'
+import DotGame from './pages/DotGame'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   // const [count, setCount] = useState(0)
 
@@ -33,6 +37,16 @@ function App() {
     <div>
       <DrawingComponent/>
     </div>
+    <>
+     <BrowserRouter>
+      <Routes>
+          <Route index element={<Home />} />
+          <Route path="/shakegame" element={<ShakeGame />} />
+          <Route path="/repeat" element={<RepeatGame />} />
+          <Route path="/dotgame" element={<DotGame />} />
+      </Routes>
+    </BrowserRouter>
+    </>
   )
 }
 
