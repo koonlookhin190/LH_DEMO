@@ -1,13 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-// import { ref, storage, uploadString, getDownloadURL } from 'your-firebase-library'; 
-import './Canvas.css';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { storage } from './firebase';
+
+import './Canvas.scss';
 
 const DrawingComponent = () => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [penSize, setPenSize] = useState(5);
+  const [penSize, setPenSize] = useState(12);
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
+  const [milliseconds, setMilliseconds] = useState(0);
+  const [timerReset, setTimerReset] = useState(false);
   var timer;
 
   useEffect(() => {
@@ -19,83 +23,98 @@ const DrawingComponent = () => {
     context.lineCap = 'round';
 
     timer = setInterval(() => {
-      setSeconds((prevSeconds) => prevSeconds + 1);
-      if (seconds === 59) {
-        setMinutes((prevMinutes) => prevMinutes + 1);
-        setSeconds(0);
-      }
-    }, 1000);
-
-    const startDrawing = (e) => {
-      setIsDrawing(true);
-      logCoordinates(e);
-      context.beginPath();
-      context.moveTo(getX(e), getY(e));
-    };
-
-    const draw = (e) => {
-      if (!isDrawing) return;
-
-      logCoordinates(e);
-
-      context.globalCompositeOperation = 'source-over';
-      context.lineWidth = penSize;
-
-      context.lineTo(getX(e), getY(e));
-      context.stroke();
-    };
-
-    const stopDrawing = () => {
-      setIsDrawing(false);
-      context.globalCompositeOperation = 'source-over';
-      context.lineWidth = penSize;
-    };
-
-    const getX = (event) => {
-      return event.clientX
-        ? event.clientX - canvas.getBoundingClientRect().left
-        : event.touches[0].clientX - canvas.getBoundingClientRect().left;
-    };
-
-    const getY = (event) => {
-      return event.clientY
-        ? event.clientY - canvas.getBoundingClientRect().top
-        : event.touches[0].clientY - canvas.getBoundingClientRect().top;
-    };
-
-    const logCoordinates = (event) => {
-      const x = getX(event);
-      const y = getY(event);
-      console.log(`Current Coordinates: (${x}, ${y}), Timer: ${minutes}:${seconds}`);
-    };
-
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('touchstart', startDrawing);
-
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchmove', draw);
-
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('touchend', stopDrawing);
+      setMilliseconds((prevMilliseconds) => {
+        if (prevMilliseconds === 900) {
+          setSeconds((prevSeconds) => {
+            return prevSeconds + 1;
+          });
+          if (seconds === 59) {
+            setMinutes((prevMinutes) => prevMinutes + 1);
+            setSeconds(0);
+          }
+          return 0;
+        }
+        return prevMilliseconds + 100;
+      });
+    }, 100);
 
     return () => {
       clearInterval(timer);
-
-      canvas.removeEventListener('mousedown', startDrawing);
-      canvas.removeEventListener('touchstart', startDrawing);
-
-      canvas.removeEventListener('mousemove', draw);
-      canvas.removeEventListener('touchmove', draw);
-
-      canvas.removeEventListener('mouseup', stopDrawing);
-      canvas.removeEventListener('touchend', stopDrawing);
     };
-  }, [isDrawing, penSize, seconds, minutes]);
+  }, [isDrawing, penSize, seconds, minutes, timerReset]);
+
+  const startDrawing = (e) => {
+    setIsDrawing(true);
+    logCoordinates(e);
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    context.beginPath();
+    context.moveTo(getX(e, rect), getY(e, rect));
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+
+    logCoordinates(e);
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    context.globalCompositeOperation = 'source-over';
+    context.lineWidth = penSize;
+
+    const rect = canvas.getBoundingClientRect();
+    context.lineTo(getX(e, rect), getY(e, rect));
+    context.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    context.globalCompositeOperation = 'source-over';
+    context.lineWidth = penSize;
+  };
+
+  const getX = (event, rect) => {
+    return (
+      (event.clientX - rect.left) ||
+      (event.touches && event.touches.length > 0 && event.touches[0].clientX - rect.left) ||
+      0
+    );
+  };
+
+  const getY = (event, rect) => {
+    return (
+      (event.clientY - rect.top) ||
+      (event.touches && event.touches.length > 0 && event.touches[0].clientY - rect.top) ||
+      0
+    );
+  };
+
+  const logCoordinates = (event) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const x = getX(event, rect);
+    const y = getY(event, rect);
+
+    // Format milliseconds, seconds, and minutes
+    const formattedMilliseconds = milliseconds < 10 ? `00${milliseconds}` : (milliseconds < 100 ? `0${milliseconds}` : milliseconds);
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    console.log(`Current Coordinates: (${x}, ${y}), Timer: ${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`);
+  };
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
+
+    setMinutes(0);
+    setSeconds(0);
+    setMilliseconds(0);
+    setTimerReset(!timerReset);
   };
 
   const saveImageToLocal = () => {
@@ -117,9 +136,27 @@ const DrawingComponent = () => {
     try {
       const imageName = `drawn_image_${Date.now()}.png`;
       const imageRef = ref(storageRef, imageName);
-      await uploadString(imageRef, image, 'data_url');
-      const imageUrl = await getDownloadURL(imageRef);
-      console.log('Image uploaded successfully. URL:', imageUrl);
+
+      // Show confirmation dialog
+      const userConfirmed = window.confirm('Do you want to send the image?');
+
+      if (userConfirmed) {
+        await uploadString(imageRef, image, 'data_url');
+        
+        // Show notification
+        if ("Notification" in window) {
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              new Notification('Thank you!', {
+                body: 'The image has been sent successfully.',
+              });
+            }
+          });
+        }
+
+        const imageUrl = await getDownloadURL(imageRef);
+        console.log('Image uploaded successfully. URL:', imageUrl);
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
     }
@@ -127,21 +164,23 @@ const DrawingComponent = () => {
 
   return (
     <div className="drawing-container">
-      <h1>Drawing</h1>
       <div className="tool-navbar">
         <button onClick={clearCanvas}>Clear</button>
-        <button id="download_image_link" onClick={saveImageToLocal} download="canvas.png">Download</button>
+        <button onClick={saveImageToLocal} download="canvas.png">Download</button>
         <button onClick={uploadImageToStorage}>Upload</button>
-      </div>
-      <div>
-        <h1>{minutes}:{seconds}</h1>
       </div>
 
       <canvas
         ref={canvasRef}
-        width={window.innerWidth - 20}
-        height={window.innerHeight * 0.6}
-        style={{ touchAction: 'none' }}
+        width={300}
+        height={500}
+        style={{ touchAction: 'none', border: '1px solid #000' }}
+        onMouseDown={startDrawing}
+        onTouchStart={startDrawing}
+        onMouseMove={draw}
+        onTouchMove={draw}
+        onMouseUp={stopDrawing}
+        onTouchEnd={stopDrawing}
       />
     </div>
   );

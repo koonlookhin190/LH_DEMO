@@ -2,64 +2,68 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-body {
+  }
+  
+  body {
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     line-height: 1.6;
     overflow: hidden;
     margin: 0;
     background-color: #2c345d;
-}
-
-.drawing-container {
+  }
+  
+  .drawing-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 65vh;
-    padding: 0.5px;
-}
-
-.tool-navbar {
+    padding: 10px; /* Add padding to create space at the top */
+  
+  }
+  
+  .drawing-container .tool-navbar {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 10px;
-}
-
-.tool-navbar button,
-.tool-navbar input {
+  }
+  
+  .drawing-container .tool-navbar button,
+  .drawing-container .tool-navbar input {
     margin-right: 10px;
     margin-bottom: 10px;
     padding: 5px 10px;
     cursor: pointer;
-}
-
-.tool-navbar button.active,
-.tool-navbar input.active {
+  }
+  
+  .drawing-container .tool-navbar button.active,
+  .drawing-container .tool-navbar input.active {
     background-color: #ccc;
-}
-
-canvas {
+  }
+  
+  .drawing-container canvas {
     border: 1px solid #000;
-    background-color: rgb(255, 255, 255);
+    background: rgba(255, 255, 255, 0.7) url('assets/Black_bold_spiral.svg.png') no-repeat center center fixed;
+    background-size: 80%;
     max-width: 100%;
-}
-
-h1 {
-    font-size: 1.5em; 
-}
-
-@media only screen and (max-width:100%) {
-    .tool-navbar {
-        flex-direction: column;
-        align-items: center;
+    background-blend-mode: overlay;
+  }
+  
+  .drawing-container h1 {
+    font-size: 1.5em;
+  }
+  
+  @media only screen and (max-width: 100%) {
+    .drawing-container .tool-navbar {
+      flex-direction: column;
+      align-items: center;
     }
-
-    .tool-navbar button,
-    .tool-navbar input {
-        margin-right: 0;
-        margin-bottom: 5px;
+  
+    .drawing-container .tool-navbar button,
+    .drawing-container .tool-navbar input {
+      margin-right: 0;
+      margin-bottom: 5px;
     }
-}
+  }
+  
