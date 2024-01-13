@@ -1,27 +1,28 @@
-import { useState, useRef, useEffect } from "react";
-import texts from "./Text.js";
+import React, { useState, useRef, useEffect } from "react";
+import { SpriteAnimator } from "react-sprite-animator";
+import texts from "./LongestSoundText.js";
 import "./RepeatGame.css";
 
-import img1 from "./assets/stand.png"
-import img2 from "./assets/speak.png"
-import tutorial1 from "./assets/tutorial_1.jpg"
-import tutorial2 from "./assets/tutorial_2.jpg"
-import tutorial3 from "./assets/tutorial_3.jpg"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import img1 from "./assets/9.png";
+import img2 from "./assets/Megaman2.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMicrophone,
+  faPlay,
+  faStop,
+} from "@fortawesome/free-solid-svg-icons";
 
-const RepeatGame = () => {
+const LongestSoundGame = () => {
   const [permission, setPermission] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const mediaRecorder = useRef(null);
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [stream, setStream] = useState(null);
   const [audioChunks, setAudioChunks] = useState([]);
   const [audio, setAudio] = useState(null);
   const [randomText, setRandomText] = useState("");
-  const mimeType = "audio/wav"; // You can change this to the desired audio format
-  const [imageSrc, setImageSrc] = useState(img1);
+  const mimeType = "audio/wav";
+  const [imageStyle, setImageStyle] = useState({});
+  const [animateSprite, setAnimateSprite] = useState(false);
 
   useEffect(() => {
     setRandomText(getRandomText());
@@ -47,6 +48,7 @@ const RepeatGame = () => {
       setPermission(true);
       setStream(streamData);
       startRecording(streamData);
+      setAnimateSprite(true); // Activate sprite animation
     } catch (err) {
       console.error(err);
 
@@ -63,12 +65,11 @@ const RepeatGame = () => {
         );
       }
     }
+    setRandomText(getRandomText());
   };
 
   const startRecording = (streamData) => {
     setRecordingStatus("recording");
-    setImageSrc(img2);
-    // analytics.logEvent('recording_started');
     const media = new MediaRecorder(streamData, { type: mimeType });
     mediaRecorder.current = media;
     let localAudioChunks = [];
@@ -76,6 +77,8 @@ const RepeatGame = () => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
       localAudioChunks.push(event.data);
+      const newPosition = localAudioChunks.length * 2;
+      setImageStyle({ transform: `translateX(${newPosition}px)` });
     };
     mediaRecorder.current.onstop = () => {
       const audioBlob = new Blob(localAudioChunks, { type: mimeType });
@@ -88,50 +91,28 @@ const RepeatGame = () => {
 
   const stopRecording = () => {
     setRecordingStatus("inactive");
-    setImageSrc(img1);
     mediaRecorder.current.stop();
   };
 
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % tutorialImages.length);
-  };
-
-  const closeTutorial = () => {
-    setShowTutorial(false);
-  };
-
-  const tutorialImages = [tutorial1, tutorial2, tutorial3];
-
   return (
-    <div className="section1">
-      {showTutorial && (
-        <div className="fullscreen-overlay">
-          <div className="tutorial-slider">
-            {tutorialImages.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Tutorial ${index + 1}`}
-                style={{
-                  display: index === currentSlide ? "block" : "none",
-                }}
-              />
-            ))}
-            {currentSlide < tutorialImages.length - 1 && (
-              <button onClick={nextSlide}>ต่อไป</button>
-            )}
-            <button onClick={closeTutorial}>ปิดหน้าต่างนี้</button>
-          </div>
-        </div>
-      )}
-      <h1>เกมพูดตามฉัน</h1>
+    <div className="section2">
+      <h1>เกมลากเสียง</h1>
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
       </div>
-      <img
-        src={imageSrc}
-        alt="Speech Image"
-        className="speech-image" />
+      {animateSprite ? (
+        <SpriteAnimator
+          width={270}
+          height={227}
+          sprite={img2}
+          shouldAnimate={true}
+          direction="horizontal"
+          frameCount={5}
+          fps={10}
+        />
+      ) : (
+        <img src={img1} alt="Speech Image" className="speech-image" style={imageStyle} />
+      )}
       <main>
         <div className="audio-controls">
           {!permission ? (
@@ -149,6 +130,7 @@ const RepeatGame = () => {
             <button
               onClick={() => {
                 startRecording(stream);
+                setAnimateSprite(true); // Activate sprite animation
               }}
               type="button"
               className="custom-button"
@@ -160,6 +142,7 @@ const RepeatGame = () => {
             <button
               onClick={() => {
                 stopRecording();
+                setAnimateSprite(false); // Deactivate sprite animation
               }}
               type="button"
               className="custom-button recording"
@@ -174,4 +157,4 @@ const RepeatGame = () => {
   );
 };
 
-export default RepeatGame;
+export default LongestSoundGame;
