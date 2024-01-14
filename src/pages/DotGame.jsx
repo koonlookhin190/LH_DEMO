@@ -1,7 +1,21 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "./DotGame.css";
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 function DotGame() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
+    authDomain: "lhdemo-4d7dd.firebaseapp.com",
+    projectId: "lhdemo-4d7dd",
+    storageBucket: "lhdemo-4d7dd.appspot.com",
+    messagingSenderId: "41015206470",
+    appId: "1:41015206470:web:19c26d967ca4d4bb376047",
+    measurementId: "G-ZHQ55X16NC"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
   const containerSize = 300;
   const dotSize = 100;
 
@@ -45,6 +59,7 @@ function DotGame() {
   };
 
   const startGame = () => {
+    logEvent(analytics, "start-dot-game")
     setIsStart(true);
     setScore(0);
     setTimeLeft(10);
@@ -69,7 +84,7 @@ function DotGame() {
       </div>
       {/* {timeLeft === 0 && <p>Score: {score}</p>} */}
       <div className="button-dot" onClick={startGame}>
-        <p className="button-text">เริ่มเล่น</p>
+            <p className="button-text">เริ่มเล่น</p>
       </div>
     </>
   );

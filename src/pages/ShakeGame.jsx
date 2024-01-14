@@ -8,7 +8,21 @@ import { Canvas } from '@react-three/fiber'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Ball from "../models/Ball"
 import { OrbitControls , Stars } from "@react-three/drei";
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 function ShakeGame() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
+    authDomain: "lhdemo-4d7dd.firebaseapp.com",
+    projectId: "lhdemo-4d7dd",
+    storageBucket: "lhdemo-4d7dd.appspot.com",
+    messagingSenderId: "41015206470",
+    appId: "1:41015206470:web:19c26d967ca4d4bb376047",
+    measurementId: "G-ZHQ55X16NC"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
     // const [coins, setCoins] = useState(Array(10).fill(true));
 
     // useEffect(() => {
@@ -201,6 +215,7 @@ function ShakeGame() {
       }, [isSensorActive]);
       const toggleSensor = () => {
         setIsSensorActive((prevIsSensorActive) => !prevIsSensorActive);
+        logEvent(analytics, "start-shake-game")
       };
 
     return (
