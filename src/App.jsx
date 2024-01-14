@@ -9,9 +9,24 @@ import RepeatGame from './pages/RepeatGame'
 import DotGame from './pages/DotGame'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LongSound from './pages/LongestSoundGame'
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
 function App() {
   // const [count, setCount] = useState(0)
-
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
+    authDomain: "lhdemo-4d7dd.firebaseapp.com",
+    projectId: "lhdemo-4d7dd",
+    storageBucket: "lhdemo-4d7dd.appspot.com",
+    messagingSenderId: "41015206470",
+    appId: "1:41015206470:web:19c26d967ca4d4bb376047",
+    measurementId: "G-ZHQ55X16NC"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
   return (
     // <>
     //   <div>
