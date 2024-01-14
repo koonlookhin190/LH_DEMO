@@ -96,11 +96,12 @@ const LongestSoundGame = () => {
 
   return (
     <div className="background-img-longest">
-      <h1>เกมลากเสียง</h1>
+      <h1 className="text">เกมลากเสียง</h1>
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
       </div>
       {animateSprite ? (
+        <div className="sprite-animator-container">
         <SpriteAnimator
           width={270}
           height={227}
@@ -110,6 +111,7 @@ const LongestSoundGame = () => {
           frameCount={5}
           fps={10}
         />
+        </div>
       ) : (
         <img src={img1} alt="Speech Image" className="speech-image" style={imageStyle} />
       )}
