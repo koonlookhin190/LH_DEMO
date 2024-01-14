@@ -219,9 +219,10 @@ function ShakeGame() {
       {/* <Canvas>
           <Gacha />
       </Canvas> */}
-       <div className="button-dot" onClick={toggleSensor}>
+       {/* <div className="button-dot" onClick={toggleSensor}>
         <p className="button-text">เริ่มเล่น</p>
-      </div>
+      </div> */}
+      <button onClick={toggleSensor}>เริ่มเล่น</button>
         </>
 
     );
