@@ -2,9 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { SpriteAnimator } from "react-sprite-animator";
 import texts from "./LongestSoundText.js";
 import "./RepeatGame.css";
+import { Link } from "react-router-dom";
 
 import img1 from "./assets/stand.png";
 import img2 from "./assets/Megaman2.png";
+import tutorial1 from "./assets/tutorial_long_1.png";
+import tutorial2 from "./assets/tutorial_long_2.png";
+import tutorial3 from "./assets/tutorial_long_3.png";
+import tutorial4 from "./assets/tutorial_long_4.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMicrophone,
@@ -12,8 +17,13 @@ import {
   faStop,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
 const LongestSoundGame = () => {
   const [permission, setPermission] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const mediaRecorder = useRef(null);
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [stream, setStream] = useState(null);
@@ -23,6 +33,19 @@ const LongestSoundGame = () => {
   const mimeType = "audio/wav";
   const [imageStyle, setImageStyle] = useState({});
   const [animateSprite, setAnimateSprite] = useState(false);
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
+    authDomain: "lhdemo-4d7dd.firebaseapp.com",
+    projectId: "lhdemo-4d7dd",
+    storageBucket: "lhdemo-4d7dd.appspot.com",
+    messagingSenderId: "41015206470",
+    appId: "1:41015206470:web:19c26d967ca4d4bb376047",
+    measurementId: "G-ZHQ55X16NC",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
   useEffect(() => {
     setRandomText(getRandomText());
@@ -94,26 +117,61 @@ const LongestSoundGame = () => {
     mediaRecorder.current.stop();
   };
 
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % tutorialImages.length);
+  };
+
+  const closeTutorial = () => {
+    setShowTutorial(false);
+  };
+
+  const tutorialImages = [tutorial1, tutorial2, tutorial3, tutorial4];
+
   return (
     <div className="background-img-longest">
+      {showTutorial && (
+        <div className="fullscreen-overlay">
+          <div className="tutorial-slider">
+            {tutorialImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Tutorial ${index + 1}`}
+                style={{
+                  display: index === currentSlide ? "block" : "none",
+                }}
+              />
+            ))}
+            {currentSlide < tutorialImages.length - 1 && (
+              <button onClick={nextSlide}>ต่อไป</button>
+            )}
+            <button onClick={closeTutorial}>ปิดหน้าต่างนี้</button>
+          </div>
+        </div>
+      )}
       <h1 className="text">เกมลากเสียง</h1>
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
       </div>
       {animateSprite ? (
         <div className="sprite-animator-container">
-        <SpriteAnimator
-          width={270}
-          height={227}
-          sprite={img2}
-          shouldAnimate={true}
-          direction="horizontal"
-          frameCount={5}
-          fps={10}
-        />
+          <SpriteAnimator
+            width={270}
+            height={227}
+            sprite={img2}
+            shouldAnimate={true}
+            direction="horizontal"
+            frameCount={5}
+            fps={14}
+          />
         </div>
       ) : (
-        <img src={img1} alt="Speech Image" className="speech-image" style={imageStyle} />
+        <img
+          src={img1}
+          alt="Speech Image"
+          className="speech-image"
+          style={imageStyle}
+        />
       )}
       <main>
         <div className="audio-controls">
@@ -121,6 +179,7 @@ const LongestSoundGame = () => {
             <button
               onClick={() => {
                 getMicrophonePermission();
+                logEvent(analytics, "get_microphone");
               }}
               type="button"
               className="custom-button"
@@ -132,6 +191,7 @@ const LongestSoundGame = () => {
             <button
               onClick={() => {
                 startRecording(stream);
+                logEvent(analytics, "play_sound_button");
                 setAnimateSprite(true); // Activate sprite animation
               }}
               type="button"
@@ -144,6 +204,7 @@ const LongestSoundGame = () => {
             <button
               onClick={() => {
                 stopRecording();
+                logEvent(analytics, "stop_sound_button");
                 setAnimateSprite(false); // Deactivate sprite animation
               }}
               type="button"
@@ -153,7 +214,19 @@ const LongestSoundGame = () => {
             </button>
           ) : null}
         </div>
-        <div>{audio && <audio controls src={audio} />}</div>
+        <div className="sound-padding">
+          {audio && <audio controls src={audio} />}
+        </div>
+        {permission && recordingStatus === "inactive" ? (
+          <div>
+            <h3>คุณได้รับ 5 คะแนน, ขอบคุณที่ร่วมสนุกกับเรา</h3>
+            <Link to="/">
+              <button onClick={() => logEvent(analytics, "finish_home")}>
+                เสร็จสิ้น
+              </button>
+            </Link>
+          </div>
+        ) : null}
       </main>
     </div>
   );

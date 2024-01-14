@@ -6,8 +6,8 @@
   justify-content: center;
  } 
   .text {
-  margin-top: 0;
-  padding-top: 10%;
+    margin-top: 0;
+    padding-top: 30%;
     color: black;
  }
  .audio-controls {
@@ -101,4 +101,7 @@
     max-height: 100%;
     display: block;
     margin: auto;
+  }
+  .sound-padding {
+    padding-top: 10%;
   }
