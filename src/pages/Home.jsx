@@ -28,7 +28,7 @@ function Home() {
                     <p className="menuText">เกมวาด</p>
                 </div>
             </Link>
-            <Link to="/">
+            <Link to="/longestgame">
                 <div className="menu">
                     <p className="menuText">เกมพูด</p>
                 </div>

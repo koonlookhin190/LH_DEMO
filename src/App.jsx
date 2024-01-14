@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import RepeatGame from './pages/RepeatGame'
 import DotGame from './pages/DotGame'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LongSound from './pages/LongestSoundGame'
 function App() {
   // const [count, setCount] = useState(0)
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/repeat" element={<RepeatGame />} />
         <Route path="/dotgame" element={<DotGame />} />
         <Route path="/drawing" element={<DrawingComponent />} />
+        <Route path="/longestgame" element={<LongSound/>} />
       </Routes>
     </BrowserRouter>
   );

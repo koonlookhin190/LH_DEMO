@@ -3,7 +3,7 @@ import { SpriteAnimator } from "react-sprite-animator";
 import texts from "./LongestSoundText.js";
 import "./RepeatGame.css";
 
-import img1 from "./assets/9.png";
+import img1 from "./assets/stand.png";
 import img2 from "./assets/Megaman2.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -95,7 +95,7 @@ const LongestSoundGame = () => {
   };
 
   return (
-    <div className="section2">
+    <div className="background-img-longest">
       <h1>เกมลากเสียง</h1>
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
