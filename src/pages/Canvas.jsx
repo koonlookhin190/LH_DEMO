@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 // import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 // import { storage } from './firebase';
 
@@ -13,6 +15,19 @@ const DrawingComponent = () => {
   const [milliseconds, setMilliseconds] = useState(0);
   const [timerReset, setTimerReset] = useState(false);
   var timer;
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
+    authDomain: "lhdemo-4d7dd.firebaseapp.com",
+    projectId: "lhdemo-4d7dd",
+    storageBucket: "lhdemo-4d7dd.appspot.com",
+    messagingSenderId: "41015206470",
+    appId: "1:41015206470:web:19c26d967ca4d4bb376047",
+    measurementId: "G-ZHQ55X16NC",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -128,38 +143,18 @@ const DrawingComponent = () => {
     document.body.removeChild(link);
   };
 
+  const confirmSendImage = () => {
+   
+    logEvent(analytics, 'user_press_send_image_button');
+
+    
+    alert('ขอบคุณที่ส่งรูป!');
+  };
+
   const uploadImageToStorage = async () => {
     const canvas = canvasRef.current;
     const image = canvas.toDataURL('image/png');
-    const storageRef = ref(storage, 'images');
-
-    try {
-      const imageName = `drawn_image_${Date.now()}.png`;
-      const imageRef = ref(storageRef, imageName);
-
-      // Show confirmation dialog
-      const userConfirmed = window.confirm('Do you want to send the image?');
-
-      if (userConfirmed) {
-        await uploadString(imageRef, image, 'data_url');
-        
-        // Show notification
-        if ("Notification" in window) {
-          Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-              new Notification('Thank you!', {
-                body: 'The image has been sent successfully.',
-              });
-            }
-          });
-        }
-
-        const imageUrl = await getDownloadURL(imageRef);
-        console.log('Image uploaded successfully. URL:', imageUrl);
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
+  
   };
 
   return (
@@ -168,7 +163,8 @@ const DrawingComponent = () => {
       <div className="tool-navbar">
         <button onClick={clearCanvas}>เริ่มใหม่</button>
         <button onClick={saveImageToLocal} download="canvas.png">ดาวโหลด</button>
-        <button onClick={uploadImageToStorage}>กดส่งรูปภาพ</button>
+        <button onClick={confirmSendImage}>กดส่งรูป</button>
+      
       </div>
       
       <div className="canvas-wrapper">
