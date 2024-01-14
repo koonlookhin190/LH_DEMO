@@ -10,8 +10,25 @@
   
   .container {
     position: relative;
-    width: 300px; /* Set the width of the container */
-    height: 300px; /* Set the height of the container */
+    width: 320px; /* Set the width of the container */
+    height: 320px; /* Set the height of the container */
+    padding: 4px;
     border: 1px solid #ccc;
     overflow: hidden; /* Ensure that the dot stays within the container */
+    margin-bottom: 30px;
+  }
+  .button-dot {
+    width: 200px;
+    background-color: #ffa15a;
+    height: 100px;
+    margin: 0 auto; /* This will center the button-dot horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+  }
+  
+  .button-text {
+    margin: 0;
+    font-size: 50px;
   }
