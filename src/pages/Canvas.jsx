@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { storage } from './firebase';
+// import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+// import { storage } from './firebase';
 
-import './Canvas.scss';
+// import './Canvas.scss';
 
 const DrawingComponent = () => {
   const canvasRef = useRef(null);
