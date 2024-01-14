@@ -44,7 +44,7 @@ function ShakeGame() {
     const [acceleration, setAcceleration] = useState({ x: 0, y: 0, z: 0 });
     const [gyroscope, setGyroscope] = useState({ alpha: 0, beta: 0, gamma: 0 });
     // const [holdTimeout, setHoldTimeout] = useState(null);\
-    const [countdownTime, setCountdownTime] = useState(15);
+    const [countdownTime, setCountdownTime] = useState(10);
     const percentage = (15 - countdownTime) / 15 * 100
     const [coins,setCoins] = useState(0);
   
@@ -149,17 +149,23 @@ function ShakeGame() {
                 setIsSensorActive(false);
                
                 if (isShaking && prevTime===1) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Do you want to continue',
-                        icon: 'error',
-                        confirmButtonText: 'Cool'
-                      })
+                  const randomReward = (Math.random() * (5 - 0.1) + 0.1).toFixed(2);
+                  Swal.fire({
+                    title: "รางวัล",
+                    text: `ว่าคุณโชคดีจังเลย! , คุณได้ ${randomReward} เหรียญ`,
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "ต่อไป",
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                       
+                      }
+                    });
                 }
                 else{
-                  showNotification('good you not shaking.');
+                  // showNotification('good you not shaking.');
                 }
-                return 15;
+                return 10;
               } else {
                 return prevTime - 1;
               }
@@ -184,23 +190,13 @@ function ShakeGame() {
         };
       }, [isSensorActive]);
       const toggleSensor = () => {
-        // setIsSensorActive((prevIsSensorActive) => !prevIsSensorActive);
-        const randomReward = (Math.random() * (5 - 0.1) + 0.1).toFixed(2);
-        Swal.fire({
-            title: "Reward",
-            text: `How lucky you are! You got ${randomReward} coins.`,
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Continue"
-          }).then((result) => {
-            if (result.isConfirmed) {
-             
-            }
-          });
+        setIsSensorActive((prevIsSensorActive) => !prevIsSensorActive);
       };
+
     return (
         <>
-        <h3>Shake Game</h3>
+        <h1>เกมเขย่า</h1>
+        <p>กดเรื่มแล้วเขย่าได้เลย</p>
               {/* <div className="gacha-ball"> */}
         {/* {coins.map((coin, index) => (
           <div key={index} className={`coin ${coin ? 'falling' : 'staying'}`} />
@@ -223,7 +219,9 @@ function ShakeGame() {
       {/* <Canvas>
           <Gacha />
       </Canvas> */}
-      <button onClick={toggleSensor}>Start</button>
+       <div className="button-dot" onClick={toggleSensor}>
+        <p className="button-text">เริ่มเล่น</p>
+      </div>
         </>
 
     );

@@ -7,8 +7,8 @@ import img2 from "./assets/speak.png"
 import tutorial1 from "./assets/tutorial_1.jpg"
 import tutorial2 from "./assets/tutorial_2.jpg"
 import tutorial3 from "./assets/tutorial_3.jpg"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faMicrophone, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
 const RepeatGame = () => {
   const [permission, setPermission] = useState(false);
