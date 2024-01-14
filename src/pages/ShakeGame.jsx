@@ -44,7 +44,7 @@ function ShakeGame() {
     const [acceleration, setAcceleration] = useState({ x: 0, y: 0, z: 0 });
     const [gyroscope, setGyroscope] = useState({ alpha: 0, beta: 0, gamma: 0 });
     // const [holdTimeout, setHoldTimeout] = useState(null);\
-    const [countdownTime, setCountdownTime] = useState(10);
+    const [countdownTime, setCountdownTime] = useState(5);
     const percentage = (15 - countdownTime) / 15 * 100
     const [coins,setCoins] = useState(0);
   
@@ -163,9 +163,19 @@ function ShakeGame() {
                     });
                 }
                 else{
-                  // showNotification('good you not shaking.');
+                  Swal.fire({
+                    title: "เตือน",
+                    text: `กรุณาเขย่าขณะกดเริ่ม`,
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "ต่อไป",
+                  }).then((result) => {
+                      if (result.isConfirmed) {
+                       
+                      }
+                    });
                 }
-                return 10;
+                return 5;
               } else {
                 return prevTime - 1;
               }
@@ -219,10 +229,14 @@ function ShakeGame() {
       {/* <Canvas>
           <Gacha />
       </Canvas> */}
-       {/* <div className="button-dot" onClick={toggleSensor}>
-        <p className="button-text">เริ่มเล่น</p>
-      </div> */}
-      <button onClick={toggleSensor}>เริ่มเล่น</button>
+       <div className="button-dot" onClick={toggleSensor}>
+        {isSensorActive ? (
+            <p className="button-text">กำลังเล่น</p>
+          ) : (
+            <p className="button-text">เริ่มเล่น</p>
+          )}
+      </div>
+      {/* <button onClick={toggleSensor}>เริ่มเล่น</button> */}
         </>
 
     );
