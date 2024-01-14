@@ -1,69 +1,75 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    overflow: hidden;
-    margin: 0;
-    background-color: #2c345d;
-  }
-  
-  .drawing-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 65vh;
-    padding: 10px; /* Add padding to create space at the top */
-  
-  }
-  
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow: hidden;
+  margin: 0;
+  background-color: #2c345d;
+}
+
+.drawing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 65vh;
+  padding: 10px; /* Add padding to create space at the top */
+
+}
+
+.drawing-container .tool-navbar {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.drawing-container .tool-navbar button,
+.drawing-container .tool-navbar input {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.drawing-container .tool-navbar button.active,
+.drawing-container .tool-navbar input.active {
+  background-color: #ccc;
+}
+
+.drawing-container canvas {
+  border: 1px solid #000;
+  background: rgba(255, 255, 255, 0.7) url('../assets/Black_bold_spiral.svg.png') no-repeat center center fixed;
+  background-size: 70%;
+  max-width: 100%;
+  background-blend-mode: overlay; 
+}
+
+.drawing-container h1 {
+  font-size: 1.5em;
+}
+
+.canvas {
+  touch-action: none;
+  border: 1px solid #000;
+  width: 300px; /* Set the desired width */
+  height: 450px; /* Set the desired height */
+}
+
+@media only screen and (max-width: 100%) {
   .drawing-container .tool-navbar {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
   }
-  
+
   .drawing-container .tool-navbar button,
   .drawing-container .tool-navbar input {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
+    margin-right: 0;
+    margin-bottom: 5px;
   }
-  
-  .drawing-container .tool-navbar button.active,
-  .drawing-container .tool-navbar input.active {
-    background-color: #ccc;
-  }
-  
-  .drawing-container canvas {
-    border: 1px solid #000;
-    background: rgba(255, 255, 255, 0.7) url('assets/Black_bold_spiral.svg.png') no-repeat center center fixed;
-    background-size: 80%;
-    max-width: 100%;
-    background-blend-mode: overlay;
-  }
-  
-  .drawing-container h1 {
-    font-size: 1.5em;
-  }
-  
-  @media only screen and (max-width: 100%) {
-    .drawing-container .tool-navbar {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .drawing-container .tool-navbar button,
-    .drawing-container .tool-navbar input {
-      margin-right: 0;
-      margin-bottom: 5px;
-    }
-  }
-  
+}

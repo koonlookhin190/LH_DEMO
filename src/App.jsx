@@ -34,9 +34,6 @@ function App() {
     //     Click on the Vite and React logos to learn more
     //   </p>
     // </>
-    <div>
-      <DrawingComponent/>
-    </div>
     <>
      <BrowserRouter>
       <Routes>
@@ -44,6 +41,7 @@ function App() {
           <Route path="/shakegame" element={<ShakeGame />} />
           <Route path="/repeat" element={<RepeatGame />} />
           <Route path="/dotgame" element={<DotGame />} />
+          <Route path="/canvas" element={<DrawingComponent />} />
       </Routes>
     </BrowserRouter>
     </>
