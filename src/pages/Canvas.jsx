@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 // import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 // import { storage } from './firebase';
 
-// import './Canvas.scss';
+import './Canvas.css';
 
 const DrawingComponent = () => {
   const canvasRef = useRef(null);
@@ -164,24 +164,27 @@ const DrawingComponent = () => {
 
   return (
     <div className="drawing-container">
+      <h1>เกมวาดรูป</h1>
       <div className="tool-navbar">
-        <button onClick={clearCanvas}>Clear</button>
-        <button onClick={saveImageToLocal} download="canvas.png">Download</button>
-        <button onClick={uploadImageToStorage}>Upload</button>
+        <button onClick={clearCanvas}>เริ่มใหม่</button>
+        <button onClick={saveImageToLocal} download="canvas.png">ดาวโหลด</button>
+        <button onClick={uploadImageToStorage}>กดส่งรูปภาพ</button>
       </div>
-
-      <canvas
-        ref={canvasRef}
-        width={300}
-        height={500}
-        style={{ touchAction: 'none', border: '1px solid #000' }}
-        onMouseDown={startDrawing}
-        onTouchStart={startDrawing}
-        onMouseMove={draw}
-        onTouchMove={draw}
-        onMouseUp={stopDrawing}
-        onTouchEnd={stopDrawing}
-      />
+      
+      <div className="canvas-wrapper">
+        <canvas 
+          ref={canvasRef}
+          width={300}
+          height={500}
+          className="canvas"
+          onMouseDown={startDrawing}
+          onTouchStart={startDrawing}
+          onMouseMove={draw}
+          onTouchMove={draw}
+          onMouseUp={stopDrawing}
+          onTouchEnd={stopDrawing}
+        />
+      </div>
     </div>
   );
 };

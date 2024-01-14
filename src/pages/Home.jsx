@@ -23,7 +23,7 @@ function Home() {
                     <p className="menuText">กดจุด</p>
                 </div>
             </Link>
-            <Link to="/">
+            <Link to="/canvas">
                 <div className="menu">
                     <p className="menuText">เกมวาด</p>
                 </div>
