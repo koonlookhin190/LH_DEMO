@@ -10,12 +10,12 @@ import tutorial1 from "./assets/tutorial_long_1.png";
 import tutorial2 from "./assets/tutorial_long_2.png";
 import tutorial3 from "./assets/tutorial_long_3.png";
 import tutorial4 from "./assets/tutorial_long_4.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMicrophone,
-  faPlay,
-  faStop,
-} from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faMicrophone,
+//   faPlay,
+//   faStop,
+// } from "@fortawesome/free-solid-svg-icons";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -33,6 +33,7 @@ const LongestSoundGame = () => {
   const mimeType = "audio/wav";
   const [imageStyle, setImageStyle] = useState({});
   const [animateSprite, setAnimateSprite] = useState(false);
+  const [timer, setTimer] = useState(15);
 
   const firebaseConfig = {
     apiKey: "AIzaSyD0YPFk2JTtrT8HG8uGb8s2V1AfI4P7-dA",
@@ -93,9 +94,22 @@ const LongestSoundGame = () => {
 
   const startRecording = (streamData) => {
     setRecordingStatus("recording");
+    setTimer(15);
     const media = new MediaRecorder(streamData, { type: mimeType });
     mediaRecorder.current = media;
     let localAudioChunks = [];
+
+    const timerInterval = setInterval(() => {
+      setTimer((prevTimer) => {
+        const newTimer = prevTimer - 1;
+        if (newTimer === 0) {
+          clearInterval(timerInterval);
+          stopRecording();
+        }
+        return newTimer;
+      });
+    }, 1000);
+
     mediaRecorder.current.ondataavailable = (event) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
@@ -103,7 +117,13 @@ const LongestSoundGame = () => {
       const newPosition = localAudioChunks.length * 2;
       setImageStyle({ transform: `translateX(${newPosition}px)` });
     };
+
+    const timerId = setTimeout(() => {
+      stopRecording();
+    }, 15000);
     mediaRecorder.current.onstop = () => {
+      clearTimeout(timerId);
+      clearInterval(timerInterval);
       const audioBlob = new Blob(localAudioChunks, { type: mimeType });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
@@ -129,7 +149,7 @@ const LongestSoundGame = () => {
 
   return (
     <div className="background-img-longest">
-      {showTutorial && (
+      {/* {showTutorial && (
         <div className="fullscreen-overlay">
           <div className="tutorial-slider">
             {tutorialImages.map((image, index) => (
@@ -148,12 +168,12 @@ const LongestSoundGame = () => {
             <button onClick={closeTutorial}>ปิดหน้าต่างนี้</button>
           </div>
         </div>
-      )}
+      )} */}
       <h1 className="text">เกมลากเสียง</h1>
       <div className="speech-bubble">
         <h2>{'"' + randomText + '"'}</h2>
       </div>
-      {animateSprite ? (
+      {animateSprite && timer > 0 ? (
         <div className="sprite-animator-container">
           <SpriteAnimator
             width={270}
@@ -174,6 +194,9 @@ const LongestSoundGame = () => {
         />
       )}
       <main>
+        <div>
+          <h3>เวลาที่เหลือ: {timer} วินาที</h3>
+        </div>
         <div className="audio-controls">
           {!permission ? (
             <button
@@ -184,7 +207,8 @@ const LongestSoundGame = () => {
               type="button"
               className="custom-button"
             >
-              <FontAwesomeIcon icon={faMicrophone} size="2x" />
+              {/* <FontAwesomeIcon icon={faMicrophone} size="2x" /> */}
+              <p>กดที่นี่เพื่อทดสอบ</p>
             </button>
           ) : null}
           {permission && recordingStatus === "inactive" ? (
@@ -197,7 +221,8 @@ const LongestSoundGame = () => {
               type="button"
               className="custom-button"
             >
-              <FontAwesomeIcon icon={faPlay} size="2x" />
+              {/* <FontAwesomeIcon icon={faPlay} size="2x" /> */}
+              <p>ลองอีกครั้ง</p>
             </button>
           ) : null}
           {permission && recordingStatus === "recording" ? (
@@ -210,7 +235,8 @@ const LongestSoundGame = () => {
               type="button"
               className="custom-button recording"
             >
-              <FontAwesomeIcon icon={faStop} size="2x" />
+              {/* <FontAwesomeIcon icon={faStop} size="2x" /> */}
+              <h2>หยุด</h2>
             </button>
           ) : null}
         </div>
